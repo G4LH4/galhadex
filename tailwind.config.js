@@ -7,6 +7,7 @@ module.exports = {
       },
       backgroundImage: {
         hell: "url('./src/Img/hell.gif')",
+        rainforest: "url('./src/Img/rainforest.gif')",
       },
       colors: {
         bodyColor: "#252525",

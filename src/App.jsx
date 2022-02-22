@@ -1,11 +1,10 @@
 import React from "react";
-import { Route, useLocation } from "wouter";
+import { Route } from "wouter";
 
 import LandPage from "./Components/Pages/LandPage";
+import Home from "./Components/Pages/Home";
 
 function App() {
-  const [location, setLocation] = useLocation();
-
   return (
     <div className="App font-press-start">
       <Route path="/">
@@ -13,7 +12,7 @@ function App() {
       </Route>
 
       <Route path="/home">
-        <h1 className="text-5xl text-white">Home</h1>
+        <Home />
       </Route>
     </div>
   );
