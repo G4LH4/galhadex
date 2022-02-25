@@ -1,81 +1,91 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "wouter";
 
 import MainDiv from "../MainDiv";
 import getPokeData from "../../Services/FetchAPI";
 
+// Sections
+import SearchSection from "../SearchSection";
+import DataSection from "../DataSection";
+
+import Abilities from "../Abilities";
+
+// images
+import professorOakIMG from "../../Img/oak.png";
+import exclamationPNG from "../../Img/exclamation.png";
+
+const usePokemon = (searchTerm) => {
+  const [poke, setPoke] = useState();
+  const [pokeSelected, setPokeSelected] = useState(searchTerm);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (pokeSelected) {
+      setLoading(true);
+      getPokeData(pokeSelected.toLowerCase()).then((data) => {
+        setPoke(data);
+      });
+      setLoading(false);
+    }
+  }, [pokeSelected]);
+
+  return [poke, setPokeSelected, loading];
+};
+
 const Home = () => {
-  const [inputData, setData] = useState("");
-  const [pokemonInfo, setPokemonInfo] = useState([]);
-
-  const getPokemon = async (pokeSelected) => {
-    const data = await getPokeData(pokeSelected);
-
-    console.log(data);
-    setPokemonInfo(data);
-  };
+  const [poke, setPokeSelected] = usePokemon("");
 
   return (
     <div id="home">
       <MainDiv>
-        <div className="h-full text-white bg-no-repeat bg-rainforest">
-          <div className="nes-field is-inline">
-            <div
-              className={`mx-auto  ${
-                pokemonInfo?.name ? "m-5" : "mt-20"
-              } bg-red-500 nes-container with-title`}
+        <div className="h-full text-white bg-no-repeat bg-gradient-to-b from-bg1Color to-bg2Color">
+          <Link to="/">
+            <h1 className="m-3 text-black nes-pointer">Go back</h1>
+          </Link>
+
+          <div className="">
+            {/* <img src={professorOakIMG} className="mx-auto mt-10 " /> */}
+
+            {/* <div
+              className={`mx-auto mb-10 flex  bg-red-600  nes-container with-title`}
             >
-              <p className="text-black title">Search pokemon</p>
-
-              <div id="input" className="flex">
-                <input
-                  type="text"
-                  id="dark_field"
-                  className="text-black nes-input"
-                  onChange={(e) => setData(e.target.value)}
-                />
-                <button
-                  type="button"
-                  className="nes-btn w-fit is-primary"
-                  onClick={() => getPokemon(inputData.toLowerCase())}
-                >
-                  Search
-                </button>
+              <div className="mr-10">
+                <SearchSection actionSearch={setPokeSelected} />
+                {poke && <InfoPokemonSearched pokemonInfo={poke} />}
               </div>
 
-              <div className="mt-20 nes-container with-title is-centered">
-                <p className="text-black title">
-                  {pokemonInfo.name ? pokemonInfo.name : "Pokemon"}
-                </p>
-
-                <section id="image-container" className="w-2/4 mx-auto ">
-                  {" "}
-                  <img
-                    src={pokemonInfo?.sprites?.front_default}
-                    className="w-full mx-auto"
-                  />
-                </section>
+              <div>
+                {poke && <DataSection pokemonInfo={poke} />}
+                {poke && <Abilities poke={poke} />}
               </div>
-
-              <div className="mt-20 nes-container with-title is-centered">
-                <p className="text-black title">Description</p>
-                <PDescription>
-                  {" "}
-                  {pokemonInfo?.height ? `Height: ${pokemonInfo.height}` : ""}
-                </PDescription>
-                <PDescription>
-                  {pokemonInfo?.weight ? `Weight: ${pokemonInfo.weight}` : ""}
-                </PDescription>
-              </div>
-            </div>
+            </div> */}
           </div>
+
+          {/* <img
+            src={exclamationPNG}
+            className=" animate-bounce nes-pointer"
+            onClick={handleClick}
+          /> */}
         </div>
       </MainDiv>
     </div>
   );
 };
 
-const PDescription = ({ children }) => {
-  return <p className="text-left">{children}</p>;
+const InfoPokemonSearched = ({ pokemonInfo }) => {
+  return (
+    <div className=" nes-container is-dark with-title is-centered">
+      <p className="text-black title">
+        {pokemonInfo.name ? pokemonInfo.name : "Pokemon"}
+      </p>
+
+      <section id="image-container" className="mx-auto ">
+        <img
+          src={pokemonInfo?.sprites?.front_default}
+          className="w-3/5 mx-auto mt-10"
+        />
+      </section>
+    </div>
+  );
 };
 
 export default Home;
