@@ -4,16 +4,6 @@ import { Link } from "wouter";
 import MainDiv from "../MainDiv";
 import getPokeData from "../../Services/FetchAPI";
 
-// Sections
-import SearchSection from "../SearchSection";
-import DataSection from "../DataSection";
-
-import Abilities from "../Abilities";
-
-// images
-import professorOakIMG from "../../Img/oak.png";
-import exclamationPNG from "../../Img/exclamation.png";
-
 const usePokemon = (searchTerm) => {
   const [poke, setPoke] = useState();
   const [pokeSelected, setPokeSelected] = useState(searchTerm);
@@ -32,58 +22,42 @@ const usePokemon = (searchTerm) => {
 };
 
 const Home = () => {
-  const [poke, setPokeSelected] = usePokemon("");
-
   return (
     <div id="home">
       <MainDiv>
-        <div className="h-full text-white bg-no-repeat bg-gradient-to-b from-bg1Color to-bg2Color">
-          <Link to="/">
-            <h1 className="m-3 text-black nes-pointer">Go back</h1>
-          </Link>
-
-          <div className="">
-            {/* <img src={professorOakIMG} className="mx-auto mt-10 " /> */}
-
-            {/* <div
-              className={`mx-auto mb-10 flex  bg-red-600  nes-container with-title`}
-            >
-              <div className="mr-10">
-                <SearchSection actionSearch={setPokeSelected} />
-                {poke && <InfoPokemonSearched pokemonInfo={poke} />}
-              </div>
-
-              <div>
-                {poke && <DataSection pokemonInfo={poke} />}
-                {poke && <Abilities poke={poke} />}
-              </div>
-            </div> */}
+        <div className="h-full text-white bg-gray-200">
+          <div className="flex">
+            <Link href="/" className="text-xs bg-spanColor ">
+              Go back
+            </Link>
+            <Borders>
+              <h1 className="text-4xl text-center">ÍNDICE DE LA POKéDEX</h1>
+            </Borders>
           </div>
 
-          {/* <img
-            src={exclamationPNG}
-            className=" animate-bounce nes-pointer"
-            onClick={handleClick}
-          /> */}
+          <div>
+            <SectionsSearch title={"Las Pokédex "} classOfSearch="numérico" />
+            <SectionsSearch title={"buscar"} classOfSearch="bla" />
+          </div>
         </div>
+
+        <Borders />
       </MainDiv>
     </div>
   );
 };
 
-const InfoPokemonSearched = ({ pokemonInfo }) => {
-  return (
-    <div className=" nes-container is-dark with-title is-centered">
-      <p className="text-black title">
-        {pokemonInfo.name ? pokemonInfo.name : "Pokemon"}
-      </p>
+const Borders = ({ children }) => {
+  return <div className="w-full p-5 bg-spanColor">{children}</div>;
+};
 
-      <section id="image-container" className="mx-auto ">
-        <img
-          src={pokemonInfo?.sprites?.front_default}
-          className="w-3/5 mx-auto mt-10"
-        />
-      </section>
+const SectionsSearch = ({ title, classOfSearch }) => {
+  return (
+    <div className="p-5">
+      <h1 className="mt-10 text-4xl text-orange-600">{title.toUpperCase()}</h1>
+      <h2 className="mt-3 ml-5 text-3xl text-black">
+        {classOfSearch.toUpperCase()}
+      </h2>
     </div>
   );
 };
